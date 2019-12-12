@@ -1,10 +1,9 @@
-function [  ] = plot_exp_recon( P, alpha_vec, phi, t_phi, disc_d, n_vec_d, n_vec, T, T_s, c_m_n, t_k, a_k)
-%PLOT_EXP_RECON Summary of this function goes here
-%   Detailed explanation goes here
+function [  ] = plot_exp_recon( P, alpha_vec, phi, t_phi, disc_d, n_vec_d, n_vec, T_s, c_m_n, t_k, a_k)
+%PLOT_EXP_RECON Plot exponential reproduction
 
 n_vec = sort(n_vec);
 t1 = t_phi(1);
-t2 = n_vec(end) * T_s * T + t_phi(end);
+t2 = n_vec(end) * T_s  + t_phi(end);
 t     = (t1:T_s:t2)';
 
 % Font sizes
@@ -14,13 +13,13 @@ axis_size  = 26;
 for ith_m = 1:P+1
     alpha = alpha_vec(ith_m);   
     % Original exponential
-    f = exp(alpha * t / T);
+    f = exp(alpha * t );
     
     % Estimated exponential
     f_rec = zeros(length(t), length(n_vec_d)+1);
     for i = 1:length(n_vec_d)
         %idx_phi are the indices in t_phi+n_vec(i)*T
-        inc = n_vec_d(1, i)*T_s*T;
+        inc = n_vec_d(1, i)*T_s;
         tphi = t_phi + inc;
         %Find intersection
         %[~, idx_f, idx_phi] = intersect(t, tphi);
@@ -34,8 +33,7 @@ for ith_m = 1:P+1
     n_vec_unused = setdiff(n_vec, n_vec_d);
     f_rec_unused = zeros(length(t), length(n_vec_unused));
     for i = 1:length(n_vec_unused)
-        %idx_phi are the indices in t_phi+n_vec(i)*T
-        tphi = t_phi + n_vec_unused(1, i)*T_s*T;
+        tphi = t_phi + n_vec_unused(1, i)*T_s;
         %Find intersection
         [~,idx_f, idx_phi] = intersect(t, tphi);
         f_rec_unused(idx_f,i)    = phi(idx_phi);
@@ -74,7 +72,7 @@ for ith_m = 1:P+1
     axis([t(1) t(end) min(real(f_rec(:,1)))-1*dyn_range max(real(f_rec(:,1)))+1.6*dyn_range])
     
     axis([0 8 -2 2]);
-    scatter(disc_d*T_s*T, zeros(1, length(disc_d)), 'o', 'filled');
+    scatter(disc_d*T_s, zeros(1, length(disc_d)), 'o', 'filled');
     
     stem(t_k, a_k, 'g');
     %grid on;

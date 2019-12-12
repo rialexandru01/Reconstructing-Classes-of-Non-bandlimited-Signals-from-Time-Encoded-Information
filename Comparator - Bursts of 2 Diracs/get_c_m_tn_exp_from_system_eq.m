@@ -1,4 +1,4 @@
-function [c_m_n, t_range] = get_c_m_tn_exp_from_system_eq(P, alpha_m, disc_d, n_vec_d, no_kernels, phi, t_phi)
+function [c_m_n] = get_c_m_tn_exp_from_system_eq(P, alpha_m, disc_d, n_vec_d, no_kernels, phi, t_phi)
 %N is the number of shifted kernels overlapping the interval between the
 %two consecutive discontinuities in disc_d
 
@@ -61,7 +61,4 @@ for m = 0:P
   
 end
 
-c_m_n_direct  = get_c_m_tn_directly( alpha_m(1,1), alpha_m(1,2), n_vec_d(1,1)*T_s, n_vec_d(1,2)*T_s, disc_d, T_s);
-% c_m_n = c_m_n_direct;
-t_range = t_range*T_s;
 

@@ -23,7 +23,7 @@ function [ t_n, y_n, y_with_reset] = integrate_and_fire( y, C_T )
 %  - y_n      : Amplitude of output samples (close to C_T)
 %  - t_n      : Location of the output spikes
 %  - y        : The integrate filtered input, with spike-triggered resets
-
+%
 
 t_n = [];
 y_n = [];

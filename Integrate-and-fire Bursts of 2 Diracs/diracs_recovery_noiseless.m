@@ -96,16 +96,16 @@ plot_all_signals( t_int,t_sig, x, t_y1, y_with_feedback1, f1, t_f1, t_y2, y_with
 %--------------------------SEQUENTIAL INPUT ESTIMATION---------------------
 %--------------------------------------------------------------------------
 
-%Initialize the estimated time locations tt_k, and amplitudes aa_k
-tt_k = [];
-aa_k = [];
+%Initialize the estimated time locations t_est_k, and amplitudes a_est_k
+t_est_k = [];
+a_est_k = [];
 
 for b = 1:B
 
     %Get the 2 samples in this burst, corresponding to the areas between output
     %spikes s and s+1, and output spikes s+1 and s+2
-    [y_n1_burst, t_n1_burst] = get_samples_burst(b, tt_k, T_s, min_separation, t_n1, y_n1, s, C_T);
-    [y_n2_burst, t_n2_burst] = get_samples_burst(b, tt_k, T_s, min_separation, t_n2, y_n2, s, C_T);
+    [y_n1_burst, t_n1_burst] = get_samples_burst(b, t_est_k, T_s, min_separation, t_n1, y_n1, s, C_T);
+    [y_n2_burst, t_n2_burst] = get_samples_burst(b, t_est_k, T_s, min_separation, t_n2, y_n2, s, C_T);
 
     %Get the coefficients that reproduce exponentials
     %CHANNEL 1
@@ -144,12 +144,12 @@ for b = 1:B
     angle_uu_k = mod(angle(uu_k),2*pi) ;
     
     %Estimate the Diracs' locations
-    tt_k_burst = shift_estimated_time( tt_k, uu_k, min_separation, T_s, lambda, t_n_0_channel1, t_n_0_channel2);
+    tt_k_burst = shift_estimated_time( t_est_k, uu_k, min_separation, T_s, lambda, t_n_0_channel1, t_n_0_channel2);
     
     %Estimate the Diracs' amplitudes
     aa_k_burst = real(retrieve_amplitudes(alpha_vec1, s_m1(1,1), s_m1(2,1), tt_k_burst));
-    tt_k = vertcat(tt_k, tt_k_burst);
-    aa_k = vertcat(aa_k, aa_k_burst);
+    t_est_k = vertcat(t_est_k, tt_k_burst);
+    a_est_k = vertcat(a_est_k, aa_k_burst);
     
     %Remove the contribution of the current estimation
     %CHANNEL 1
@@ -191,7 +191,7 @@ title('Channel 1: output non-uniform samples');
 xlabel('(c)');
 
 subplot(2,2,4)
-stem(tt_k, aa_k, 'k', 'fill','Markersize',2)
+stem(t_est_k, a_est_k, 'k', 'fill','Markersize',2)
 axis([0 t_int -1.6 1.6]);
 title('Reconstruction of the input signal');
 xlabel('(d)');
