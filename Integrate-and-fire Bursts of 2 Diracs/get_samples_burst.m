@@ -1,4 +1,4 @@
-function [y_n_burst, t_n_burst] = get_samples_burst(b, tt_k, T_s, min_separation, t_n, y_n, s, C_T)
+function [y_n_burst, t_n_burst] = get_samples_burst(b, tt_k, T_s, min_separation, t_n, y_n, s, C_T, K_B)
 % -------------------------------------------------------------------------
 % Communications and Signal Processing Group
 % Department of Electrical and Electronic Engineering
@@ -29,6 +29,7 @@ function [y_n_burst, t_n_burst] = get_samples_burst(b, tt_k, T_s, min_separation
 %  slightly differ from C_T
 %  - C_T     : Value of the trigger mark of the integrate-and-fire TEM
 %  - s       : (s-1) is the number of samples we discard in each burst
+%  - K_B     : Number of Diracs in each burst
 %
 % OUTPUT:
 %  - y_n_burst   : Samples which can be used for the estimation of the
@@ -36,7 +37,7 @@ function [y_n_burst, t_n_burst] = get_samples_burst(b, tt_k, T_s, min_separation
 %  - t_n_burst   : Locations of the samples y_n_burst
 
 if b>1
-        last_dirac = tt_k(2*(b-1),1);
+        last_dirac = tt_k(K_B*(b-1),1);
         y_n_b = union(find(y_n>=C_T*0.1), find(y_n<=C_T*0.1));
         index_b = intersect(y_n_b,find(t_n>=last_dirac/T_s+min_separation));        
         t_n_burst = t_n(index_b);

@@ -110,8 +110,8 @@ for b = 1:B
 
     %Get the 2 samples in this burst, corresponding to the areas between output
     %spikes s and s+1, and output spikes s+1 and s+2
-    [y_n1_burst, t_n1_burst] = get_samples_burst(b, t_est_k, T_s, min_separation, t_n1, y_n1, s, C_T);
-    [y_n2_burst, t_n2_burst] = get_samples_burst(b, t_est_k, T_s, min_separation, t_n2, y_n2, s, C_T);
+    [y_n1_burst, t_n1_burst] = get_samples_burst(b, t_est_k, T_s, min_separation, t_n1, y_n1, s, C_T, K_B);
+    [y_n2_burst, t_n2_burst] = get_samples_burst(b, t_est_k, T_s, min_separation, t_n2, y_n2, s, C_T, K_B);
 
     %Get the coefficients that reproduce exponentials
     %CHANNEL 1
