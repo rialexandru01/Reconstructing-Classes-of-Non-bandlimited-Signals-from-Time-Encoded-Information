@@ -9,7 +9,7 @@ ccc;
 
 
 % Parameters
-t_int = 10;                    % Temporal interval where Diracs can be located is [0 t_int]
+t_int = 15;                    % Temporal interval where Diracs can be located is [0 t_int]
 K     = 6;                     % Number of Diracs
 K_B   = 2;                     % Number of Diracs in each burst
 P = 1;                         % E-spline order
@@ -17,6 +17,8 @@ T_s   = 1 / 64;                % "continuous" time resolution
 cad_it     = 5;                % Number of iterations for Cadzow algorithm
 A = 1;                         % Amplitude of the sinusoidal test function of the comparator
 f_tem = 1.76;                  % Frequency of comparator's test function
+noise_var = 0.000001;           % Variance of input additive white Gaussian noise
+
 % E-spline
 omega_0 = -pi/3; 
 lambda = -2*omega_0/3 ;
@@ -52,6 +54,9 @@ a_k = [1  1  -0.5  -1  0.3  1.2 ]*0.5; %EXP 1
 % Generate the continuous-time signal x(t)
 x = zeros(size(t_sig));
 x(itk(1:K)) = a_k(1:K);
+[x_noisy, noise] = add_noise( x', noise_var);
+% x = x_noisy';
+
 
 %%
 %--------------------------------------------------------------------------

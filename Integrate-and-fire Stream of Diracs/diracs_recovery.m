@@ -9,7 +9,7 @@ t_int = 10;             % Temporal interval where Diracs can be located
 K     = 2;              % Number of Diracs
 P     = 1;              % E-spline order
 T_s   = 1 / 64;         % "continuous" time resolution
-
+SNR   = 20;             % Signal-to-noise ratio
 
 % E-spline of order P (can reproduce P exponentials)
 m = 0:P;
@@ -38,6 +38,11 @@ a_k = [1 1]; %amplitudes of the Diracs
 % Generate the continuous-time signal x(t)
 x = zeros(size(t_sig));
 x(itk(1:K)) = a_k(1:K);
+length_x = itk(end)+L_phi;
+
+% Add noise to the input signal
+[x_noisy, noise, sigma_noise] = add_noise( x', SNR, length_x );
+% x = x_noisy;
 
 %%
 %--------------------------------------------------------------------------
@@ -80,7 +85,7 @@ for b = 1:K %Sequentially retrieve the Diracs
     t_n_2 = t_n_current(1,3)*T_s;
    
 %     [ c_m ] = get_c_m_n( alpha_vec, t_n_0, t_n_1, t_n_2); %Compute the coefficients for a spline of order P=1
-    [ c_m ] = get_least_squares_c_m_n( alpha_vec, h, t_h, t_n_current*T_s, T_s, L_phi); %Compute least square coefficients
+    [ c_m ] = get_least_squares_c_m_n( alpha_vec, h, t_h, t_n_current*T_s, T_s, L_phi); %Compute least square coefficients, by solving a system of equations
 
     %Compute the signal moments
     s_m1 = c_m*y_n_current';

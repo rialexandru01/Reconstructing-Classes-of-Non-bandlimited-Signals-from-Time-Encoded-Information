@@ -12,6 +12,8 @@ B = K/K_B;                    % Number of input bursts
 P     = 2*K_B - 1;            % E-spline order
 T_s   = 1 / 64;               % "continuous" time resolution
 s = 2;                        % at most s-1 samples we cannot use in each burst
+C_T = 0.1;                    % Threshold value of integrator
+SNR = 50;                     % Signal-to-noise ratio
 
 % E-spline of order P (can reproduce P+1 exponentials)
 omega_0 = -pi/3;
@@ -35,8 +37,7 @@ L_phi2        = length(phi2);
 h2            = real(phi2(end:-1:1));
 t_h2          = -t_phi2(end:-1:1);
 
-%Threshold value of integrator
-C_T = 0.1;
+
 
 %Minimum separation between consecutive bursts
 min_separation = max(L_phi1, L_phi2);
@@ -54,6 +55,11 @@ a_k = [1 1 0.7 1 ]*1.1 ;
 % Generate the continuous-time signal x(t)
 x = zeros(size(t_sig));
 x(itk(1:K)) = a_k(1:K);
+length_x = itk(end)+L_phi1;
+
+% Add noise to the input
+[x_noisy, noise, sigma_noise] = add_noise( x', SNR, length_x );
+% x = x_noisy;
 
 %%
 %--------------------------------------------------------------------------
